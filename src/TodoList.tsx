@@ -1,31 +1,55 @@
-import React from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {TaskType} from "./App";
 
 type PropsType = {
-    title: string,
+    title: string
     tasks: Array<TaskType>
+    removeTask: (taskID: string) => void
+    changeFilter: (value: ('all'|'active'|'completed')) => void
+    addTask: (title: string) => void
+
 }
 const TodoList = (props: PropsType) => {
+    const [title, setTitle] = useState<string>('')
+    const addTask = () => {
+        props.addTask(title)
+        setTitle('')
+    }
+    const changeTitle = ((e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value))
+    const keyEnter = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter'? addTask() : undefined
+    const all = ()=> {props.changeFilter('all')}
+    const active = ()=> {props.changeFilter('active')}
+    const completed = ()=> {props.changeFilter('completed')}
+
+
+    const tasksJSX = props.tasks.map(task => {
+        return (
+            <li key={task.id}>
+                <input type="checkbox" checked={task.isDone}/>
+                <span>{task.title}</span>
+                <button onClick={()=>props.removeTask(task.id)}>x</button>
+            </li>
+        )
+    })
     return (
         <div>
             <div>
                 <h3>{props.title}</h3>
                 <div>
-                    <input/>
-                    <button>+</button>
+                    <input
+                    value={title}
+                    onChange={changeTitle}
+                    onKeyPress={keyEnter}
+                    />
+                    <button onClick={addTask}>+</button>
                 </div>
                 <ul>
-                    <li><input type="checkbox" checked={props.tasks[0].isDone}/>
-                        <span>{props.tasks[0].title}</span></li>
-                    <li><input type="checkbox" checked={props.tasks[1].isDone}/>
-                        <span>{props.tasks[1].title}</span></li>
-                    <li><input type="checkbox" checked={props.tasks[2].isDone}/>
-                         <span>{props.tasks[2].title}</span></li>
+                    {tasksJSX}
                 </ul>
                 <div>
-                    <button>All</button>
-                    <button>Active</button>
-                    <button>Completed</button>
+                    <button onClick={all}>All</button>
+                    <button onClick={active}>Active</button>
+                    <button onClick={completed}>Completed</button>
                 </div>
             </div>
         </div>
@@ -34,4 +58,3 @@ const TodoList = (props: PropsType) => {
 
 export default TodoList;
 
-//
