@@ -6,3 +6,36 @@
 .App > div {
   margin-right: 50px;
 }
+
+.is-done {
+  opacity: 0.5;
+}
+
+.active-filter {
+  background-color: #2784c4;
+  border-radius: 3px;
+  border: 1px solid #5ea4d3;
+  color: white;
+  margin-right: 3px;
+}
+
+.un-active {
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid #5ea4d3;
+  color: #2784c4;
+  margin-right: 3px;
+}
+
+.task-button {
+  background-color: white;
+  border: white;
+  font-size: medium;
+  margin-top: 0;
+}
+
+.error {
+  outline: none;
+  border: 2px solid rgba(255, 0,0, 50%);
+
+}

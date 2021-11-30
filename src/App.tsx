@@ -19,28 +19,31 @@ function App() {
         {id: v1(), title: "REACT", isDone: false},
     ])
 
-    let [filter, setFilter] = useState<'all'|'active'|'completed'>('all');
+    let [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
 
     const removeTask = (taskID: string) => {
-       const upDatedTasks = (tasks.filter(task => task.id !== taskID))
+        const upDatedTasks = (tasks.filter(task => task.id !== taskID))
         setTasks(upDatedTasks);
     }
-
     const addTask = (newTaskTitle: string) => {
-      const newTask: TaskType = {
-          id: v1(),
-          title: newTaskTitle,
-          isDone: false,
-      }
-     setTasks([...tasks, newTask])
+        const newTask: TaskType = {
+            id: v1(),
+            title: newTaskTitle,
+            isDone: false,
+        }
+        setTasks([...tasks, newTask])
     }
-    
-    const changeFilter = (value:('all'|'active'|'completed') ) => {
-      setFilter(value);
+    const changeTaskStatus = (taskID: string, isDone: boolean) => {
+        setTasks(tasks.map(t => t.id === taskID ? {...t, isDone: isDone} : t))
+
+    };
+
+    const changeFilter = (value: ('all' | 'active' | 'completed')) => {
+        setFilter(value);
     }
 
     let tasksForRender = tasks;
-    if(filter === 'active') {
+    if (filter === 'active') {
         tasksForRender = tasks.filter(t => !t.isDone)
     }
     if (filter === 'completed') {
@@ -55,6 +58,8 @@ function App() {
                 removeTask={removeTask}
                 addTask={addTask}
                 changeFilter={changeFilter}
+                filter={filter}
+                changeTaskStatus={changeTaskStatus}
             />
         </div>
     );
